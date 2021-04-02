@@ -58,6 +58,32 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
+        List<Node> gnodes = graph.getNodes();
+        int len = nodes.size();
+        for(int i=0;i<len;i++) {
+        	for(Node node : gnodes) {  //on parcours les nodes du graphes
+        		while(node.compareTo(nodes.get(i)) != 0) { 
+        			continue;
+        		} //on sort dès qu'on trouve la node de la liste
+        		int nb_suc = node.getNumberOfSuccessors();
+        		if(nb_suc == 0) {
+        			//erreur
+        		}else {
+	        		List<Arc> suc = node.getSuccessors();
+	        		float lenght = 10000000;
+	        		Arc min;
+	        		for(Arc arc : suc) {
+	        			if(arc.getDestination() == nodes.get(i+1)) { //l'arc pointe vers le prochain point voulu
+	        				if(arc.getLength()<lenght) {
+	        					lenght = arc.getLength();
+	        					arcs(i) = arc;
+	        				}
+	        			}
+	        		}
+	        		arcs.add(min);
+        		}
+        	}
+        }
         return new Path(graph, arcs);
     }
 
@@ -199,22 +225,33 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
     public boolean isValid() {
-    	//a
-        // TODO:
+        
+    	if(isEmpty()) return true;
+    	
+    	int len = size();
+    	if(len == 1) return true;
+    	
     	List<Arc>arcs = getArcs();
     	boolean res = false;
-    	if(isEmpty()) res = true;
-    	if(arcs != null) res = true;
-    	if(arcs.get(0).getOrigin() == getOrigin()) {
-    		for(int i=0;i<2;i++) {
-    			if(arcs.get(i).getDestination() == arcs.get(i+1).getOrigin()) {
-    				res = true;
+
+    	if(arcs != null) {
+    		if(arcs.get(0).getOrigin()== getOrigin()) {
+    			if(len==2) {
+    				if(arcs.get(0).getDestination()==getDestination()) res=true;
     			}
+    			else {
+    				res = true;
+    				for(int i=0;i<len-2;i++) {
+    					if(arcs.get(i).getDestination()!=arcs.get(i+1).getOrigin()) return false;
+    			}
+	    			
+	        	}
     		}
     	}
+    	
         return res;
     }
 
@@ -226,7 +263,7 @@ public class Path {
      * Need to be implemented.
      */
     public float getLength() {
-        // TODO:
+        
     	List<Arc>arcs = getArcs();
     	float length = 0;
     	for(Arc arc : arcs) {
@@ -246,7 +283,7 @@ public class Path {
      *  Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
+        
     	double time = 0;
     	List<Arc>arcs = getArcs();
     	for(Arc arc : arcs) {
@@ -264,7 +301,7 @@ public class Path {
      *  Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
+        
     	double time = 0;
     	List<Arc>arcs = getArcs();
     	for(Arc arc : arcs) {
