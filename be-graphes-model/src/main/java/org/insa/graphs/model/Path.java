@@ -3,6 +3,7 @@ package org.insa.graphs.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * <p>
@@ -30,13 +31,47 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
-        
+        List<Integer> gid = new ArrayList<Integer>(); // liste des id des nodes du graphe
+        List<Node> gnodes = graph.getNodes();
+        int j=0; // pour remplacer les successeurs
+        for(Node nod : gnodes) {
+        	gid.add(nod.getId());
+        }
+        if(nodes.size() == 0) {
+        	return new Path(graph);
+        }
+        if(nodes.size() == 1) {
+        	return new Path(graph, nodes.get(0));
+        }
+        //for(Node node : nodes) {  //on parcours les nodes
+        for(int i=0;i<nodes.size()-1;i++) {
+        	//ListIterator<Node> li = nodes.listIterator();
+        	Node node = nodes.get(i);
+        	if(gid.contains(node.getId())){ // on vérifie que la node appartient au graphe
+        		int nb_suc = node.getNumberOfSuccessors();
+        		if(nb_suc == 0) throw new IllegalArgumentException("Node without successor");
+        		
+        		List<Arc> suc = node.getSuccessors();
+        		arcs.add(suc.get(0));
+        		for(Arc arcs_suc : suc) { //on parcours les successeurs
+        			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
+        			if(arcs_suc.getDestination()==nodes.get(i+1)) {
+        				
+        				if(arcs_suc.getMinimumTravelTime()<arcs.get(j).getMinimumTravelTime()){ //plus rapide
+        					arcs.set(j, arcs_suc);
+        				}
+        			}	
+        		}
+        		j++;
+        	}
+        	
+        }
         return new Path(graph, arcs);
     }
 
@@ -52,37 +87,45 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        List<Integer> gid = new ArrayList<Integer>(); // liste des id des nodes du graphe
         List<Node> gnodes = graph.getNodes();
-        int len = nodes.size();
-        for(int i=0;i<len;i++) {
-        	for(Node node : gnodes) {  //on parcours les nodes du graphes
-        		while(node.compareTo(nodes.get(i)) != 0) { 
-        			continue;
-        		} //on sort dès qu'on trouve la node de la liste
+        int j=0; // pour remplacer les successeurs
+        for(Node nod : gnodes) {
+        	gid.add(nod.getId());
+        }
+        if(nodes.size() == 0) {
+        	return new Path(graph);
+        }
+        if(nodes.size() == 1) {
+        	return new Path(graph, nodes.get(0));
+        }
+        //for(Node node : nodes) {  //on parcours les nodes
+        for(int i=0;i<nodes.size()-1;i++) {
+        	//ListIterator<Node> li = nodes.listIterator();
+        	Node node = nodes.get(i);
+        	if(gid.contains(node.getId())){ // on vérifie que la node appartient au graphe
         		int nb_suc = node.getNumberOfSuccessors();
-        		if(nb_suc == 0) {
-        			//erreur
-        		}else {
-	        		List<Arc> suc = node.getSuccessors();
-	        		float lenght = 10000000;
-	        		Arc min;
-	        		for(Arc arc : suc) {
-	        			if(arc.getDestination() == nodes.get(i+1)) { //l'arc pointe vers le prochain point voulu
-	        				if(arc.getLength()<lenght) {
-	        					lenght = arc.getLength();
-	        					arcs(i) = arc;
-	        				}
-	        			}
-	        		}
-	        		arcs.add(min);
+        		if(nb_suc == 0) throw new IllegalArgumentException("Node without successor");
+        		
+        		List<Arc> suc = node.getSuccessors();
+        		arcs.add(suc.get(0));
+        		for(Arc arcs_suc : suc) { //on parcours les successeurs
+        			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
+        			if(arcs_suc.getDestination()==nodes.get(i+1)) {
+        				
+        				if(arcs_suc.getLength()<arcs.get(j).getLength()) { //distance min
+        					arcs.set(j, arcs_suc);
+        				}
+        			}	
         		}
+        		j++;
         	}
+        	
         }
         return new Path(graph, arcs);
     }
