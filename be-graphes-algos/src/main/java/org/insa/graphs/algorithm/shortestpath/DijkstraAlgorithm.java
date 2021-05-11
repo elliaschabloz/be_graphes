@@ -1,12 +1,16 @@
 package org.insa.graphs.algorithm.shortestpath;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Label;
 import org.insa.graphs.model.Node;
+import org.insa.graphs.model.Path;
+import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
@@ -25,6 +29,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         /* Init */
         Node origin = data.getOrigin();
+        List<Arc> shortest_path = null;
+        Arc path = null;
         BinaryHeap<Label> heap = new BinaryHeap<Label>();
         
         
@@ -64,13 +70,25 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			if( current_cost > min.getCost()+succ.getMinimumTravelTime()) {
         				current_cost = min.getCost()+succ.getMinimumTravelTime();
         				tab_label[id_succ].setCost(current_cost);
-        				tab_label[id_succ].setPere(succ);	
+        				tab_label[id_succ].setPere(succ);
+        				path = succ;
         			}	
         		}
+        		
         	}
+        	shortest_path.add(path);
         	heap.remove(min);
         }
         
+        // The destination has been found, notify the observers.
+        notifyDestinationReached(data.getDestination());
+        
+
+        // Reverse the path...
+        Collections.reverse(shortest_path);
+
+        // Create the final solution.
+        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, shortest_path));
         
         return solution;
     }
