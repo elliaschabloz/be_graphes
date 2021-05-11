@@ -15,22 +15,27 @@ import java.util.List;
  *
  */
 
-public final class Label {
+public class Label implements Comparable<Label>{
 	
 	private int sommet_courant;
 	private boolean marque;
-	private int cost;
+	private double cost;
 	private Arc pere;
 	
-	public Label(int sommet_courant, boolean marque, int cost, Arc pere) {
+	
+	public Label(int sommet_courant, boolean marque, double cost, Arc pere) {
 		this.sommet_courant = sommet_courant;
 		this.marque = marque;
 		this.cost = cost;
 		this.pere = pere;
 	}
 	
-	public int getCost() {
+	public double getCost() {
 		return this.cost;
+	}
+	
+	public int getSommet() {
+		return this.sommet_courant;
 	}
 	
 	public void setSommet(int sommet) {
@@ -41,7 +46,7 @@ public final class Label {
 		this.marque = marque;
 	}
 	
-	public void setCost(int cost) {
+	public void setCost(double cost) {
 		this.cost = cost;
 	}
 	
@@ -49,5 +54,8 @@ public final class Label {
 		this.pere = pere;
 	}
 	
+	public int compareTo(Label L2) {
+		return Double.compare(this.getCost(), L2.getCost());
+	}
 	
 }
