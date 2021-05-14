@@ -20,10 +20,10 @@ public class Label implements Comparable<Label>{
 	private int sommet_courant;
 	private boolean marque;
 	private double cost;
-	private Arc pere;
+	private int pere;
 	
 	
-	public Label(int sommet_courant, boolean marque, double cost, Arc pere) {
+	public Label(int sommet_courant, boolean marque, double cost, int pere) {
 		this.sommet_courant = sommet_courant;
 		this.marque = marque;
 		this.cost = cost;
@@ -38,10 +38,13 @@ public class Label implements Comparable<Label>{
 		return this.sommet_courant;
 	}
 	
-	public Arc getFather() {
+	public int getFather() {
 		return this.pere;
 	}
 	
+	public boolean getMarque() {
+		return this.marque;
+	}
 	public void setSommet(int sommet) {
 		this.sommet_courant = sommet;
 	}
@@ -54,7 +57,7 @@ public class Label implements Comparable<Label>{
 		this.cost = cost;
 	}
 	
-	public void setPere(Arc pere) {
+	public void setPere(int pere) {
 		this.pere = pere;
 	}
 	
