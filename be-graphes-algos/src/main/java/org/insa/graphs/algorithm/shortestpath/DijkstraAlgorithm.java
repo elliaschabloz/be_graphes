@@ -57,11 +57,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Arrays.fill(fatherArcs, null);
         */
         
-        Label min;
+        
 
         // tant qu'il existe des sommets non marqués
-        while(mark.contains(Boolean.FALSE)) {
-        	
+        while(!tab_label[data.getDestination().getId()].getMarque()&&!heap.isEmpty()) {
+        	Label min;
         	try {
         		min = heap.deleteMin();
         	} catch(EmptyPriorityQueueException e) {
