@@ -38,6 +38,10 @@ public class Label implements Comparable<Label>{
 		return this.sommet_courant;
 	}
 	
+	public Arc getFather() {
+		return this.pere;
+	}
+	
 	public void setSommet(int sommet) {
 		this.sommet_courant = sommet;
 	}
