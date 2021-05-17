@@ -46,8 +46,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         //ArrayList<boolean> mark = new ArrayList<boolean>(nbNodes); 
         /*boolean[] mark = new boolean[nbNodes];
         Arrays.fill(mark, false);*/
-        List<Boolean> mark = new ArrayList<Boolean>(Arrays.asList(new Boolean[nbNodes]));
-        Collections.fill(mark, Boolean.FALSE);
+        //List<Boolean> mark = new ArrayList<Boolean>(Arrays.asList(new Boolean[nbNodes]));
+        //Collections.fill(mark, Boolean.FALSE);
        
         /*
         Double[] cost = new Double[nbNodes];
@@ -70,7 +70,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	//min = heap.findMin();
         	min.setMarque(true);
         	//mark[min.getSommet()] = true;
-        	mark.set(min.getSommet(), true);
+        	//mark.set(min.getSommet(), true);
         	
         	//liste des arcs successeurs=y de min=x
         	List<Arc> successors = graph.getNodes().get(min.getSommet()).getSuccessors();
@@ -78,7 +78,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	// pour chaque y de x
         	for(Arc succ : successors) {
         		int id_succ = succ.getDestination().getId();
-        		if(!(mark.get(id_succ))) {
+        		if(!(tab_label[id_succ].getMarque()	)) {
         			double current_cost = (tab_label[id_succ]).getCost();
         			if( current_cost > min.getCost()+succ.getMinimumTravelTime()) {
         				
