@@ -1,7 +1,7 @@
 package org.insa.graphs.algorithm.shortestpath;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.algorithm.utils.ElementNotFoundException;
 import org.insa.graphs.algorithm.utils.EmptyPriorityQueueException;
+import org.insa.graphs.algorithm.AbstractInputData;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
@@ -58,15 +59,21 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         */
         
         
-
-        // tant qu'il existe des sommets non marqués
-        while(!tab_label[data.getDestination().getId()].getMarque()&&!heap.isEmpty()) {
+        int i = 1;
+        // tant que la destination n'est pas marquée
+        while( !tab_label[data.getDestination().getId()].getMarque() && !heap.isEmpty() ) {
+        	System.out.println("i=" + i +"\n");
+        	i++;
         	Label min;
+        	
         	try {
         		min = heap.deleteMin();
         	} catch(EmptyPriorityQueueException e) {
+        		System.out.println("break \n");
         		break;
         	}
+        	
+        	System.out.println(min.getSommet()+"\n");
         	//min = heap.findMin();
         	min.setMarque(true);
         	//mark[min.getSommet()] = true;
@@ -84,47 +91,66 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         				
         				current_cost = min.getCost()+succ.getMinimumTravelTime();
         				tab_label[id_succ].setCost(current_cost);
-        				tab_label[id_succ].setPere(id_succ);
+        				tab_label[id_succ].setPere(min.getSommet());
         				
         				try { // on met a jour le label dans le tas
+        					System.out.println("dans le try \n" + id_succ);
         					heap.remove(tab_label[id_succ]);
         					heap.insert(tab_label[id_succ]);
         				}catch(ElementNotFoundException e) { // on l'ajoute s'il n'y était pas
+        					System.out.println("dans le catch \n" + id_succ);
         					heap.insert(tab_label[id_succ]);
         				}
         			}	
         		}
         		
         	}
+        	
         }
-        
+        System.out.println("sortie du while \n");
+        System.out.println("dest marque = " + tab_label[data.getDestination().getId()].getMarque() + "\n");
         ShortestPathSolution solution = null;
         
      // Destination has no predecessor, the solution is infeasible...
         if (!tab_label[data.getDestination().getId()].getMarque()) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
+            System.out.println("infaisable \n");
         }
         else {
+        	System.out.println("dest trouvée ! \n");
 	        // The destination has been found, notify the observers.
-	        notifyDestinationReached(data.getDestination());
+	        //notifyDestinationReached(data.getDestination());
 	        
 	        // Initialize array of fathers id
 	        ArrayList<Node> nodes = new ArrayList<>();
-	        nodes.add(data.getDestination());
-	        
 	        Node pere = data.getDestination();
-	        while (!pere.equals(data.getOrigin())) {
+	        nodes.add(pere);
+	        
+	        System.out.println("debut petit while \n");
+	        System.out.println("origine = " + origin.getId() + "\n");
+	        while (!(pere.equals(origin)) ) {
+	        	//pere.compareTo(origin) != 0
 	            pere = graph.getNodes().get(tab_label[pere.getId()].getFather());
 	            nodes.add(pere);
+	            System.out.println("pere =" + pere.getId() + "\n");
 	        }
+	        System.out.println("tableau de nodes fini \n");
 	        // Reverse the path...
 	        Collections.reverse(nodes);
+	        System.out.println("tableau de nodes inversé ! \n");
 	        
-	        Path path_of_nodes = Path.createShortestPathFromNodes(graph, nodes);
+	        Path path_of_nodes;
 	        
-	        // Create the final solution.
+	        //selon le mode
+	        if(data.getMode().equals(AbstractInputData.Mode.LENGTH)) {
+	        	path_of_nodes = Path.createShortestPathFromNodes(graph, nodes);
+	        }else {
+	        	path_of_nodes = Path.createFastestPathFromNodes(graph, nodes);
+	        }
+	        
 	        solution = new ShortestPathSolution(data, Status.OPTIMAL, path_of_nodes);
         }
+        System.out.println("fin \n");
         return solution;
     }
 
