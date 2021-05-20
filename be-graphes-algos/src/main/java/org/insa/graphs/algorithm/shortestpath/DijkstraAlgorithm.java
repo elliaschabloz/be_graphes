@@ -38,7 +38,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         Label[] tab_label = new Label[nbNodes];
         for(Node g_node : graph.getNodes()) {
-        	Label L = new Label(g_node.getId(), false, Double.POSITIVE_INFINITY, -1);
+        	Label L = new Label(g_node.getId(), false, Double.POSITIVE_INFINITY, -1, null);
         	tab_label[g_node.getId()] = L;
         }
         tab_label[origin.getId()].setCost(0);
@@ -63,30 +63,38 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	
         	// pour chaque y de x
         	for(Arc succ : successors) {
-        		int id_succ = succ.getDestination().getId();
-        		
-        		if(!(tab_label[id_succ].getMarque()) ) {
-        			
-        			double current_cost = (tab_label[id_succ]).getCost();
-        			double w = data.getCost(succ);
-        			double new_cost = min.getCost() + w;
-        			
-        			if( current_cost > new_cost ) {
-        				tab_label[id_succ].setCost(new_cost);
-        				tab_label[id_succ].setPere(min.getSommet());
-        				
-        				try { // on met a jour le label dans le tas
-        					heap.remove(tab_label[id_succ]);
-        					heap.insert(tab_label[id_succ]);
-        				}catch(ElementNotFoundException e) { // on l'ajoute s'il n'y était pas
-        					heap.insert(tab_label[id_succ]);
-        				}
-        			}	
+        		if(data.isAllowed(succ)) {
+	        		int id_succ = succ.getDestination().getId();
+	        		
+	        		if(!(tab_label[id_succ].getMarque()) ) {
+	        			
+	        			double current_cost = (tab_label[id_succ]).getCost();
+	        			double w = data.getCost(succ);
+	        			double new_cost = min.getCost() + w;
+	        			
+	        			if( current_cost > new_cost ) {
+	        				tab_label[id_succ].setCost(new_cost);
+	        				tab_label[id_succ].setPere(min.getSommet());
+	        				tab_label[id_succ].setArc(succ);
+	        				
+	        				try { // on met a jour le label dans le tas
+	        					heap.remove(tab_label[id_succ]);
+	        					heap.insert(tab_label[id_succ]);
+	        				}catch(ElementNotFoundException e) { // on l'ajoute s'il n'y était pas
+	        					heap.insert(tab_label[id_succ]);
+	        				}
+	        			}	
+	        		}
         		}
-        		
         	}
         	
         }
+        /*
+        for(Label L : tab_label) {
+        	System.out.print("node:"+ L.getSommet() + " père:" + L.getFather() + " \n");
+        }
+        */
+        //System.out.print("LabelList = "+ tab_label);
         ShortestPathSolution solution = null;
         
      // Destination has no predecessor, the solution is infeasible...
@@ -101,18 +109,47 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        
 	        // Initialize array of fathers id
 	        ArrayList<Node> nodes = new ArrayList<>();
-	        Node pere = data.getDestination();
-	        nodes.add(pere);
 	        
+	        Node pere = data.getDestination();
+	        
+	        nodes.add(pere);
 	        while (!(pere.equals(origin)) ) {
+	        	System.out.print("id node = " + pere.getId() + "\n");
 	            pere = graph.getNodes().get(tab_label[pere.getId()].getFather());
 	            nodes.add(pere);
+	        }
+	        
+	        for(Node n : nodes) {
+	        	System.out.print("node " + n.getId() + " ");
 	        }
 	        // Reverse the path...
 	        Collections.reverse(nodes);
 	        
-	        Path path_of_nodes;
+	        for(Node n : nodes) {
+	        	System.out.print("node " + n.getId() + " ");
+	        }
 	        
+	        //Path path_of_nodes;
+	        Arc arc_aux = tab_label[pere.getId()].getArc();
+	        ArrayList<Arc> chemin = null;
+	        System.out.print(arc_aux);
+	        if(arc_aux != null) {
+	        	System.out.print("pb1 \n");
+	        	notifyDestinationReached(data.getDestination());
+	        	System.out.print("pb2 \n");
+	        	chemin = new ArrayList<>();
+		        
+		        while(arc_aux != null) {
+		        	chemin.add(arc_aux);
+		        	System.out.print("a \n");
+		        	arc_aux = tab_label[arc_aux.getOrigin().getId()].getArc();
+		        }
+		        System.out.print("b\n");
+		        //Reversing ArcList : it needs to start from the origin
+		        Collections.reverse(chemin);
+		        //solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, chemin));
+	        }
+	        /*
 	        //selon le mode
 	        if(data.getMode().equals(AbstractInputData.Mode.LENGTH)) {
 	        	path_of_nodes = Path.createShortestPathFromNodes(graph, nodes);
@@ -121,6 +158,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        }
 	        
 	        solution = new ShortestPathSolution(data, Status.OPTIMAL, path_of_nodes);
+	        */
+	        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, chemin));
         }
         return solution;
     }
