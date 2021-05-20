@@ -38,6 +38,7 @@ public class Path {
         List<Arc> arcs = new ArrayList<Arc>();
         List<Integer> gid = new ArrayList<Integer>(); // liste des id des nodes du graphe
         List<Node> gnodes = graph.getNodes();
+        boolean connected = false;
         int j=0; // pour remplacer les successeurs
         for(Node nod : gnodes) {
         	gid.add(nod.getId());
@@ -54,19 +55,20 @@ public class Path {
         	Node node = nodes.get(i);
         	if(gid.contains(node.getId())){ // on vérifie que la node appartient au graphe
         		int nb_suc = node.getNumberOfSuccessors();
-        		if(nb_suc == 0) throw new IllegalArgumentException("Node without successor");
+        		if(nb_suc == 0) throw new IllegalArgumentException();
         		
         		List<Arc> suc = node.getSuccessors();
         		arcs.add(suc.get(0));
         		for(Arc arcs_suc : suc) { //on parcours les successeurs
         			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
         			if(arcs_suc.getDestination()==nodes.get(i+1)) {
-        				
+        				connected = true;
         				if(arcs_suc.getMinimumTravelTime()<arcs.get(j).getMinimumTravelTime()){ //plus rapide
         					arcs.set(j, arcs_suc);
         				}
-        			}	
+        			}
         		}
+        		if(!connected) throw new IllegalArgumentException();
         		j++;
         	}
         	
@@ -93,6 +95,7 @@ public class Path {
         List<Arc> arcs = new ArrayList<Arc>();
         List<Integer> gid = new ArrayList<Integer>(); // liste des id des nodes du graphe
         List<Node> gnodes = graph.getNodes();
+        boolean connected = false;
         int j=0; // pour remplacer les successeurs
         for(Node nod : gnodes) {
         	gid.add(nod.getId());
@@ -109,19 +112,20 @@ public class Path {
         	Node node = nodes.get(i);
         	if(gid.contains(node.getId())){ // on vérifie que la node appartient au graphe
         		int nb_suc = node.getNumberOfSuccessors();
-        		if(nb_suc == 0) throw new IllegalArgumentException("Node without successor");
+        		if(nb_suc == 0) throw new IllegalArgumentException();
         		
         		List<Arc> suc = node.getSuccessors();
         		arcs.add(suc.get(0));
         		for(Arc arcs_suc : suc) { //on parcours les successeurs
         			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
         			if(arcs_suc.getDestination()==nodes.get(i+1)) {
-        				
+        				connected = true;
         				if(arcs_suc.getLength()<arcs.get(j).getLength()) { //distance min
         					arcs.set(j, arcs_suc);
         				}
         			}	
         		}
+        		if (!connected) throw new IllegalArgumentException();
         		j++;
         	}
         	

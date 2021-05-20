@@ -65,7 +65,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	for(Arc succ : successors) {
         		int id_succ = succ.getDestination().getId();
         		
-        		if(!(tab_label[id_succ].getMarque()	)) {
+        		if(!(tab_label[id_succ].getMarque()) ) {
         			
         			double current_cost = (tab_label[id_succ]).getCost();
         			double w = data.getCost(succ);
