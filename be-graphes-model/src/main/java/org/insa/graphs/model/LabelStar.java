@@ -4,15 +4,11 @@ public class LabelStar extends Label {
 	
 	double minCost;
 	
-	public LabelStar(Node currentNode,Node dest, boolean marque, double cost, double minCost, int pere) {
+	public LabelStar(Node currentNode,Node dest, boolean marque, double cost, int pere) {
 		super(currentNode, marque, cost, pere);
 		this.minCost = currentNode.getPoint().distanceTo(dest.getPoint());
 	}
-	
-	public void setMinCost(double minCost) {
-		this.minCost = minCost;
-	}
-	
+		
 	public double getMinCost() {
 		return this.minCost;
 	}

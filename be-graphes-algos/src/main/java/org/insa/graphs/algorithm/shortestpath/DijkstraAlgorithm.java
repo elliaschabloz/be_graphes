@@ -22,7 +22,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         super(data);
     }
     
-    public void Init(Label[] tab_lab, Graph graph) {
+    public void Init(Label[] tab_lab, Graph graph, ShortestPathData data) {
     	for(int i=0 ; i<graph.size() ; i++) {
     		tab_lab[i] = new Label(graph.get(i), false, Double.POSITIVE_INFINITY, -1);
     	}
@@ -42,7 +42,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         
         Label[] tab_label = new Label[nbNodes];
-        Init(tab_label, graph);
+        Init(tab_label, graph, data);
         /*
         for(Node g_node : graph.getNodes()) {
         	Label L = new Label(g_node, false, Double.POSITIVE_INFINITY, -1);
@@ -77,9 +77,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        		
 	        		if(!(tab_label[id_succ].getMarque()) ) {
 	        			
-	        			double current_cost = (tab_label[id_succ]).getCost();
+	        			double current_cost = (tab_label[id_succ]).getTotalCost();
 	        			double w = data.getCost(succ);
-	        			double new_cost = min.getCost() + w;
+	        			double new_cost = min.getTotalCost() + w;
 	        			
 	        			if ( Double.isFinite(new_cost) && Double.isInfinite(current_cost) ) {
 	        				notifyNodeReached(succ.getDestination());
