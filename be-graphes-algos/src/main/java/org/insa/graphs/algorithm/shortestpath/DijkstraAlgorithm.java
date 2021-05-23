@@ -37,8 +37,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         Label[] tab_label = new Label[nbNodes];
         for(Node g_node : graph.getNodes()) {
-        	Label L = new Label(g_node.getId(), false, Double.POSITIVE_INFINITY, -1);
-        	//Label L = new Label(g_node.getId(), false, Double.POSITIVE_INFINITY, -1, null);
+        	Label L = new Label(g_node, false, Double.POSITIVE_INFINITY, -1);
         	tab_label[g_node.getId()] = L;
         }
         tab_label[origin.getId()].setCost(0);
@@ -59,7 +58,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	min.setMarque(true);
         	
         	//liste des arcs successeurs=y de min=x
-        	List<Arc> successors = graph.getNodes().get(min.getSommet()).getSuccessors();
+        	List<Arc> successors = min.getNode().getSuccessors();
+        	//System.out.println("Nb succ = " + successors.size() + "\n");
         	
         	// pour chaque y de x
         	for(Arc succ : successors) {
@@ -77,8 +77,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        			}
 	        			if( current_cost > new_cost ) {
 	        				tab_label[id_succ].setCost(new_cost);
-	        				tab_label[id_succ].setPere(min.getSommet());
-	        				//tab_label[id_succ].setArc(succ);
+	        				tab_label[id_succ].setPere(min.getNode().getId());
+	        				//System.out.println("cout : " + new_cost + "\n");
 	        				
 	        				try { // on met a jour le label dans le tas
 	        					heap.remove(tab_label[id_succ]);

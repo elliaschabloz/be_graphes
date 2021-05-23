@@ -17,57 +17,32 @@ package org.insa.graphs.model;
 
 public class Label implements Comparable<Label>{
 	
-	private int sommet_courant;
-	private boolean marque;
-	private double cost;
-	private int pere;
-	private Arc arc_pere;
+	//private int sommet_courant;
+	Node currentNode;
+	boolean marque;
+	double cost;
+	int pere;
 	
-	public Label(int sommet_courant, boolean marque, double cost, int pere, Arc arc_pere) {
-		this.sommet_courant = sommet_courant;
-		this.marque = marque;
-		this.cost = cost;
-		this.pere = pere;
-		this.arc_pere = arc_pere;
-	}
-	
-	public Label(int sommet_courant, boolean marque, double cost, int pere) {
-		this.sommet_courant = sommet_courant;
+	public Label(Node currentNode, boolean marque, double cost, int pere) {
+		this.currentNode = currentNode;
 		this.marque = marque;
 		this.cost = cost;
 		this.pere = pere;
 	}
 	
-	public double getCost() {
-		return this.cost;
-	}
+	/////////////////////////////
+	////////// SETTERS //////////
+	/////////////////////////////
 	
-	public Arc getArc() {
-		return this.arc_pere;
-	}
-	
-	public int getSommet() {
-		return this.sommet_courant;
-	}
-	
-	public int getFather() {
-		return this.pere;
-	}
-	
-	public boolean getMarque() {
-		return this.marque;
-	}
-	public void setSommet(int sommet) {
-		this.sommet_courant = sommet;
+	public void setNode(Node node) {
+		this.currentNode = node;
 	}
 	
 	public void setMarque(boolean marque) {
 		this.marque = marque;
 	}
 	
-	public void setArc(Arc pere) {
-		this.arc_pere = pere;
-	}
+
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
@@ -75,9 +50,35 @@ public class Label implements Comparable<Label>{
 	public void setPere(int pere) {
 		this.pere = pere;
 	}
+		
+	/////////////////////////////
+	////////// GETTERS //////////
+	/////////////////////////////
+	
+	public Node getNode() {
+		return this.currentNode;
+	}
+	
+	public boolean getMarque() {
+		return this.marque;
+	}
+	
+	public double getCost() {
+		return this.cost;
+	}
+	
+	public double getTotalCost() {
+		return this.cost;
+	}
+	
+	public int getFather() {
+		return this.pere;
+	}
+	
+	/////////////////////////////
 	
 	public int compareTo(Label L2) {
-		return Double.compare(this.getCost(), L2.getCost());
+		return Double.compare(this.getTotalCost(), L2.getTotalCost());
 	}
 	
 }
