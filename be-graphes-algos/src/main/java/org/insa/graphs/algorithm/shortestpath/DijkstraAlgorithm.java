@@ -72,6 +72,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        			double w = data.getCost(succ);
 	        			double new_cost = min.getCost() + w;
 	        			
+	        			if ( Double.isFinite(new_cost) && Double.isInfinite(current_cost) ) {
+	        				notifyNodeReached(succ.getDestination());
+	        			}
 	        			if( current_cost > new_cost ) {
 	        				tab_label[id_succ].setCost(new_cost);
 	        				tab_label[id_succ].setPere(min.getSommet());
