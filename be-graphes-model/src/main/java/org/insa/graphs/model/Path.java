@@ -66,7 +66,7 @@ public class Path {
         			 //bonne destination
         			if(arcs_suc.getDestination().equals(nodes.get(i+1))) {
         				connected = true;
-        				if(mintime > arcs_suc.getMinimumTravelTime()) { //distance min
+        				if(mintime > arcs_suc.getMinimumTravelTime()) { //temps min
         					arcmin = arcs_suc;
         					mintime = arcs_suc.getLength();
         				}

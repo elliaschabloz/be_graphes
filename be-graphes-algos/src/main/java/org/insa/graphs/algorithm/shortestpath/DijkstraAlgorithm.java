@@ -21,7 +21,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
-
+    
+    public void Init(Label[] tab_lab, Graph graph) {
+    	for(int i=0 ; i<graph.size() ; i++) {
+    		tab_lab[i] = new Label(graph.get(i), false, Double.POSITIVE_INFINITY, -1);
+    	}
+    }
+    
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
@@ -36,17 +42,20 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         
         Label[] tab_label = new Label[nbNodes];
+        Init(tab_label, graph);
+        /*
         for(Node g_node : graph.getNodes()) {
         	Label L = new Label(g_node, false, Double.POSITIVE_INFINITY, -1);
         	tab_label[g_node.getId()] = L;
         }
+        */
+        
         tab_label[origin.getId()].setCost(0);
         heap.insert(tab_label[origin.getId()]);
-    
-        
+            
         // tant que la destination n'est pas marquée
         while( !tab_label[data.getDestination().getId()].getMarque() && !heap.isEmpty() ) {
-      
+        	
         	Label min;
         	
         	try {
@@ -59,10 +68,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	
         	//liste des arcs successeurs=y de min=x
         	List<Arc> successors = min.getNode().getSuccessors();
-        	//System.out.println("Nb succ = " + successors.size() + "\n");
         	
         	// pour chaque y de x
         	for(Arc succ : successors) {
+        		
         		if(data.isAllowed(succ)) {
 	        		int id_succ = succ.getDestination().getId();
 	        		
@@ -78,7 +87,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        			if( current_cost > new_cost ) {
 	        				tab_label[id_succ].setCost(new_cost);
 	        				tab_label[id_succ].setPere(min.getNode().getId());
-	        				//System.out.println("cout : " + new_cost + "\n");
 	        				
 	        				try { // on met a jour le label dans le tas
 	        					heap.remove(tab_label[id_succ]);
@@ -92,7 +100,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         	
         }
-        
         ShortestPathSolution solution = null;
         
         // Destination has no predecessor, the solution is infeasible...
