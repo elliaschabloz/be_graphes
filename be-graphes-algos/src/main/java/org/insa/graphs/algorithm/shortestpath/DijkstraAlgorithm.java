@@ -32,7 +32,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         /* Init */
         Node origin = data.getOrigin();
-        //List<Arc> shortest_path = new ArrayList<Arc>();
         BinaryHeap<Label> heap = new BinaryHeap<Label>();
         
         
@@ -90,15 +89,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         	
         }
-        /*
-        for(Label L : tab_label) {
-        	System.out.print("node:"+ L.getSommet() + " père:" + L.getFather() + " \n");
-        }
-        */
-        //System.out.print("LabelList = "+ tab_label);
+        
         ShortestPathSolution solution = null;
         
-     // Destination has no predecessor, the solution is infeasible...
+        // Destination has no predecessor, the solution is infeasible...
         if (!tab_label[data.getDestination().getId()].getMarque()) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
             
@@ -119,38 +113,20 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	            pere = graph.getNodes().get(tab_label[pere.getId()].getFather());
 	            nodes.add(pere);
 	        }
-	        
+	        /* affichage pour debug
 	        for(Node n : nodes) {
 	        	System.out.print("node " + n.getId() + " ");
 	        }
+	        */
 	        // Reverse the path...
 	        Collections.reverse(nodes);
 	        
+	        /* affichage pour debug
 	        for(Node n : nodes) {
 	        	System.out.print("node " + n.getId() + " ");
 	        }
-	        /*
+	      	*/
 	        
-	        Arc arc_aux = tab_label[pere.getId()].getArc();
-	        ArrayList<Arc> chemin = null;
-	        System.out.print(arc_aux);
-	        if(arc_aux != null) {
-	        	System.out.print("pb1 \n");
-	        	notifyDestinationReached(data.getDestination());
-	        	System.out.print("pb2 \n");
-	        	chemin = new ArrayList<>();
-		        
-		        while(arc_aux != null) {
-		        	chemin.add(arc_aux);
-		        	System.out.print("a \n");
-		        	arc_aux = tab_label[arc_aux.getOrigin().getId()].getArc();
-		        }
-		        System.out.print("b\n");
-		        //Reversing ArcList : it needs to start from the origin
-		        Collections.reverse(chemin);
-		        //solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, chemin));
-	        }
-	        */
 	        Path path_of_nodes;
 	        
 	        //selon le mode
@@ -160,14 +136,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        	path_of_nodes = Path.createFastestPathFromNodes(graph, nodes);
 	        }
 	        
+	        /* affichage pour debug
 	        for(Arc morceau : path_of_nodes.getArcs()) {
 	        	System.out.println("from " + morceau.getOrigin().getId() +
 	        			"to " + morceau.getDestination().getId() + "\n");
 	        }
+	        */ 
 	        
 	        solution = new ShortestPathSolution(data, Status.OPTIMAL, path_of_nodes);
 	        
-	        //solution = new ShortestPathSolution(data, Status.OPTIMAL, path_of_nodes);
         }
         return solution;
     }

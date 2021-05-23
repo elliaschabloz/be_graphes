@@ -48,7 +48,7 @@ public class Path {
         if(nodes.size() == 1) {
         	return new Path(graph, nodes.get(0));
         }
-        //for(Node node : nodes) {  //on parcours les nodes
+        //on parcours les nodes
         for(int i=0;i<nodes.size()-1;i++) {
         	Node node = graph.get(nodes.get(i).getId());
         	List<Arc> suc	 = node.getSuccessors();
@@ -63,7 +63,7 @@ public class Path {
         		
         	
         		for(Arc arcs_suc : suc) { //on parcours les successeurs
-        			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
+        			 //bonne destination
         			if(arcs_suc.getDestination().equals(nodes.get(i+1))) {
         				connected = true;
         				if(mintime > arcs_suc.getMinimumTravelTime()) { //distance min
@@ -109,7 +109,7 @@ public class Path {
         if(nodes.size() == 1) {
         	return new Path(graph, nodes.get(0));
         }
-        //for(Node node : nodes) {  //on parcours les nodes
+        //on parcours les nodes
         for(int i=0;i<nodes.size()-1;i++) {
         	Node node = graph.get(nodes.get(i).getId());
         	List<Arc> suc	 = node.getSuccessors();
@@ -124,7 +124,7 @@ public class Path {
         		
         	
         		for(Arc arcs_suc : suc) { //on parcours les successeurs
-        			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
+        			//bonne destination
         			if(arcs_suc.getDestination().equals(nodes.get(i+1))) {
         				connected = true;
         				if(mindist > arcs_suc.getLength()) { //distance min
