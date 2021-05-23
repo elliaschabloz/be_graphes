@@ -109,7 +109,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        
 	        nodes.add(pere);
 	        while (!(pere.equals(origin)) ) {
-	        	System.out.print("id node = " + pere.getId() + "\n");
+	        	//System.out.print("id node = " + pere.getId() + "\n");
 	            pere = graph.getNodes().get(tab_label[pere.getId()].getFather());
 	            nodes.add(pere);
 	        }
