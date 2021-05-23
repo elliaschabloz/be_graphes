@@ -35,11 +35,10 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
+    	List<Arc> arcs = new ArrayList<Arc>();
         List<Integer> gid = new ArrayList<Integer>(); // liste des id des nodes du graphe
         List<Node> gnodes = graph.getNodes();
         boolean connected = false;
-        int j=0; // pour remplacer les successeurs
         for(Node nod : gnodes) {
         	gid.add(nod.getId());
         }
@@ -51,25 +50,30 @@ public class Path {
         }
         //for(Node node : nodes) {  //on parcours les nodes
         for(int i=0;i<nodes.size()-1;i++) {
-        	//ListIterator<Node> li = nodes.listIterator();
-        	Node node = nodes.get(i);
+        	Node node = graph.get(nodes.get(i).getId());
+        	List<Arc> suc	 = node.getSuccessors();
+        	
+        	Arc arcmin = null;
+        	double mintime = Double.MAX_VALUE;
+        	connected = false;
+        	
         	if(gid.contains(node.getId())){ // on vérifie que la node appartient au graphe
         		int nb_suc = node.getNumberOfSuccessors();
         		if(nb_suc == 0) throw new IllegalArgumentException();
         		
-        		List<Arc> suc = node.getSuccessors();
-        		arcs.add(suc.get(0));
+        	
         		for(Arc arcs_suc : suc) { //on parcours les successeurs
         			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
-        			if(arcs_suc.getDestination()==nodes.get(i+1)) {
+        			if(arcs_suc.getDestination().equals(nodes.get(i+1))) {
         				connected = true;
-        				if(arcs_suc.getMinimumTravelTime()<arcs.get(j).getMinimumTravelTime()){ //plus rapide
-        					arcs.set(j, arcs_suc);
+        				if(mintime > arcs_suc.getMinimumTravelTime()) { //distance min
+        					arcmin = arcs_suc;
+        					mintime = arcs_suc.getLength();
         				}
-        			}
+        			}	
         		}
-        		if(!connected) throw new IllegalArgumentException();
-        		j++;
+        		if (!connected) throw new IllegalArgumentException();
+        		arcs.add(arcmin);
         	}
         	
         }
@@ -96,7 +100,6 @@ public class Path {
         List<Integer> gid = new ArrayList<Integer>(); // liste des id des nodes du graphe
         List<Node> gnodes = graph.getNodes();
         boolean connected = false;
-        int j=0; // pour remplacer les successeurs
         for(Node nod : gnodes) {
         	gid.add(nod.getId());
         }
@@ -108,25 +111,30 @@ public class Path {
         }
         //for(Node node : nodes) {  //on parcours les nodes
         for(int i=0;i<nodes.size()-1;i++) {
-        	//ListIterator<Node> li = nodes.listIterator();
-        	Node node = nodes.get(i);
+        	Node node = graph.get(nodes.get(i).getId());
+        	List<Arc> suc	 = node.getSuccessors();
+        	
+        	Arc arcmin = null;
+        	double mindist = Double.MAX_VALUE;
+        	connected = false;
+        	
         	if(gid.contains(node.getId())){ // on vérifie que la node appartient au graphe
         		int nb_suc = node.getNumberOfSuccessors();
         		if(nb_suc == 0) throw new IllegalArgumentException();
         		
-        		List<Arc> suc = node.getSuccessors();
-        		arcs.add(suc.get(0));
+        	
         		for(Arc arcs_suc : suc) { //on parcours les successeurs
         			//if(arcs_suc.getDestination()==li.next()) { //bonne destination
-        			if(arcs_suc.getDestination()==nodes.get(i+1)) {
+        			if(arcs_suc.getDestination().equals(nodes.get(i+1))) {
         				connected = true;
-        				if(arcs_suc.getLength()<arcs.get(j).getLength()) { //distance min
-        					arcs.set(j, arcs_suc);
+        				if(mindist > arcs_suc.getLength()) { //distance min
+        					arcmin = arcs_suc;
+        					mindist = arcs_suc.getLength();
         				}
         			}	
         		}
         		if (!connected) throw new IllegalArgumentException();
-        		j++;
+        		arcs.add(arcmin);
         	}
         	
         }

@@ -31,6 +31,13 @@ public class Label implements Comparable<Label>{
 		this.arc_pere = arc_pere;
 	}
 	
+	public Label(int sommet_courant, boolean marque, double cost, int pere) {
+		this.sommet_courant = sommet_courant;
+		this.marque = marque;
+		this.cost = cost;
+		this.pere = pere;
+	}
+	
 	public double getCost() {
 		return this.cost;
 	}

@@ -38,7 +38,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         Label[] tab_label = new Label[nbNodes];
         for(Node g_node : graph.getNodes()) {
-        	Label L = new Label(g_node.getId(), false, Double.POSITIVE_INFINITY, -1, null);
+        	Label L = new Label(g_node.getId(), false, Double.POSITIVE_INFINITY, -1);
+        	//Label L = new Label(g_node.getId(), false, Double.POSITIVE_INFINITY, -1, null);
         	tab_label[g_node.getId()] = L;
         }
         tab_label[origin.getId()].setCost(0);
@@ -75,7 +76,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        			if( current_cost > new_cost ) {
 	        				tab_label[id_succ].setCost(new_cost);
 	        				tab_label[id_succ].setPere(min.getSommet());
-	        				tab_label[id_succ].setArc(succ);
+	        				//tab_label[id_succ].setArc(succ);
 	        				
 	        				try { // on met a jour le label dans le tas
 	        					heap.remove(tab_label[id_succ]);
@@ -128,8 +129,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        for(Node n : nodes) {
 	        	System.out.print("node " + n.getId() + " ");
 	        }
+	        /*
 	        
-	        //Path path_of_nodes;
 	        Arc arc_aux = tab_label[pere.getId()].getArc();
 	        ArrayList<Arc> chemin = null;
 	        System.out.print(arc_aux);
@@ -149,7 +150,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		        Collections.reverse(chemin);
 		        //solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, chemin));
 	        }
-	        /*
+	        */
+	        Path path_of_nodes;
+	        
 	        //selon le mode
 	        if(data.getMode().equals(AbstractInputData.Mode.LENGTH)) {
 	        	path_of_nodes = Path.createShortestPathFromNodes(graph, nodes);
@@ -157,9 +160,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        	path_of_nodes = Path.createFastestPathFromNodes(graph, nodes);
 	        }
 	        
+	        for(Arc morceau : path_of_nodes.getArcs()) {
+	        	System.out.println("from " + morceau.getOrigin().getId() +
+	        			"to " + morceau.getDestination().getId() + "\n");
+	        }
+	        
 	        solution = new ShortestPathSolution(data, Status.OPTIMAL, path_of_nodes);
-	        */
-	        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, chemin));
+	        
+	        //solution = new ShortestPathSolution(data, Status.OPTIMAL, path_of_nodes);
         }
         return solution;
     }
