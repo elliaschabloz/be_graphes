@@ -75,6 +75,10 @@ public class Label implements Comparable<Label>{
 		return this.pere;
 	}
 	
+	public double getMinCost()  {
+		return 0;
+	}
+	
 	/////////////////////////////
 	
 	public int compareTo(Label L2) {

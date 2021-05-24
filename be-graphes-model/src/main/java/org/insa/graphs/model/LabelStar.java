@@ -14,6 +14,6 @@ public class LabelStar extends Label {
 	}
 	
 	public double getTotalCost() {
-		return this.getCost() + this.getMinCost();
+		return this.cost + this.minCost;
 	}
 }

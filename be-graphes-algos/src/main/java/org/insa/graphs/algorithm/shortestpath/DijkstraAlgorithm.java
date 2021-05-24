@@ -65,6 +65,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         	
         	min.setMarque(true);
+        	//notifyNodeMarked(min.getNode());
         	
         	//liste des arcs successeurs=y de min=x
         	List<Arc> successors = min.getNode().getSuccessors();
@@ -78,14 +79,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        		if(!(tab_label[id_succ].getMarque()) ) {
 	        			
 	        			double current_cost = (tab_label[id_succ]).getTotalCost();
-	        			double w = data.getCost(succ);
-	        			double new_cost = min.getTotalCost() + w;
+	        			double w = data.getCost(succ) + tab_label[id_succ].getMinCost();
+	        			double new_cost = min.getCost() + w;
 	        			
 	        			if ( Double.isFinite(new_cost) && Double.isInfinite(current_cost) ) {
 	        				notifyNodeReached(succ.getDestination());
 	        			}
 	        			if( current_cost > new_cost ) {
-	        				tab_label[id_succ].setCost(new_cost);
+	        				tab_label[id_succ].setCost(new_cost - tab_label[id_succ].getMinCost());
 	        				tab_label[id_succ].setPere(min.getNode().getId());
 	        				
 	        				try { // on met a jour le label dans le tas
