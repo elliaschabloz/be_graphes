@@ -83,7 +83,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        			double w = data.getCost(succ) + tab_label[id_succ].getMinCost();
 	        			double new_cost = min.getCost() + w;
 	        			
-	        			//System.out.println("Cout du vol d'oiseau=" + tab_label[id_succ].getMinCost() + "\n");
+	        			System.out.println("Cout du vol d'oiseau=" + tab_label[id_succ].getMinCost() + "\n");
 	        			
 	        			if ( Double.isFinite(new_cost) && Double.isInfinite(current_cost) ) {
 	        				notifyNodeReached(succ.getDestination());
@@ -135,12 +135,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        // Reverse the path...
 	        Collections.reverse(nodes);
 	        
-	        /* affichage pour debug
+	        //affichage pour debug
+	        /*
 	        for(Node n : nodes) {
-	        	System.out.print("node " + n.getId() + " ");
+	        	System.out.print("node " + n.getId() + " cout : " + 
+	        tab_label[n.getId()].getCost() + "\n");
 	        }
 	      	*/
-	        
 	        Path path_of_nodes;
 	        
 	        //selon le mode
