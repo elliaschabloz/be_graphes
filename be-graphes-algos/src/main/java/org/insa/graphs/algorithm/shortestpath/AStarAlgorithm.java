@@ -13,7 +13,8 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     public void Init(LabelStar[] tab_lab, Graph graph, ShortestPathData data) {
     	if (data.getMode()== Mode.LENGTH) {
 	    	for(int i=0 ; i<graph.size() ; i++) {
-	    		tab_lab[i] = new LabelStar(graph.get(i), data.getDestination(), false, Double.POSITIVE_INFINITY, -1);
+	    		double minCost = graph.get(i).getPoint().distanceTo(data.getDestination().getPoint());
+	    		tab_lab[i] = new LabelStar(graph.get(i), minCost);
 	    	}
     	}
     }

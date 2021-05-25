@@ -2,11 +2,11 @@ package org.insa.graphs.model;
 
 public class LabelStar extends Label {
 	
-	double minCost;
+	private double minCost;
 	
-	public LabelStar(Node currentNode,Node dest, boolean marque, double cost, int pere) {
-		super(currentNode, marque, cost, pere);
-		this.minCost = currentNode.getPoint().distanceTo(dest.getPoint());
+	public LabelStar(Node currentNode, double minCost) {
+		super(currentNode);
+		this.minCost = minCost;
 	}
 		
 	public double getMinCost() {
@@ -14,6 +14,6 @@ public class LabelStar extends Label {
 	}
 	
 	public double getTotalCost() {
-		return this.cost + this.minCost;
+		return super.getCost() + this.minCost;
 	}
 }

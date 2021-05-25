@@ -23,6 +23,10 @@ public class Label implements Comparable<Label>{
 	double cost;
 	int pere;
 	
+	public Label(Node currentNode) {
+		this.currentNode = currentNode;
+	}
+	
 	public Label(Node currentNode, boolean marque, double cost, int pere) {
 		this.currentNode = currentNode;
 		this.marque = marque;

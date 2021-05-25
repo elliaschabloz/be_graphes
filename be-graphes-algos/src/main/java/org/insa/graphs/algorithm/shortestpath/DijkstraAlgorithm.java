@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.insa.graphs.model.Arc;
-import org.insa.graphs.model.Graph;
-import org.insa.graphs.model.Label;
-import org.insa.graphs.model.Node;
-import org.insa.graphs.model.Path;
+import org.insa.graphs.model.*;
+//import org.insa.graphs.model.RoadInformation.RoadType;
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.algorithm.utils.ElementNotFoundException;
@@ -75,12 +72,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		
         		if(data.isAllowed(succ)) {
 	        		int id_succ = succ.getDestination().getId();
+	        		//RoadInformation road = succ.getRoadInformation();
+	        		//RoadType roadType = road.getType();
 	        		
 	        		if(!(tab_label[id_succ].getMarque()) ) {
-	        			
+						/*if(roadType.valueOf("CYCLEWAY") == RoadInformation.RoadType.CYCLEWAY) {
+	        				
+	        			}*/
 	        			double current_cost = (tab_label[id_succ]).getTotalCost();
 	        			double w = data.getCost(succ) + tab_label[id_succ].getMinCost();
 	        			double new_cost = min.getCost() + w;
+	        			
+	        			//System.out.println("Cout du vol d'oiseau=" + tab_label[id_succ].getMinCost() + "\n");
 	        			
 	        			if ( Double.isFinite(new_cost) && Double.isInfinite(current_cost) ) {
 	        				notifyNodeReached(succ.getDestination());
